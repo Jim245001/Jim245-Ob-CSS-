@@ -1,0 +1,15 @@
+body .HyperMD-header.HyperMD-header-2::before {
+  content: "＃²  ";
+}
+body .HyperMD-header.HyperMD-header-3::before {
+  content: "＃³  ";
+}
+body .HyperMD-header.HyperMD-header-4::before {
+  content: "＃⁴  ";
+}
+body .HyperMD-header.HyperMD-header-5::before {
+  content: "＃⁵  ";
+}
+body .HyperMD-header.HyperMD-header-6::before {
+  content: "＃⁶  ";
+}

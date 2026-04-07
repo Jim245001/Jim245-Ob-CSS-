@@ -1,0 +1,82 @@
+/* --- 終極修正：同步延遲收回的玻璃質感 --- */
+
+/* 1. 【關鍵修正】將玻璃質感從 :hover 移到基礎容器上 */
+body .app-container .workspace-ribbon.mod-left,
+body .app-container .workspace-split.mod-left-split,
+body .app-container .workspace-split.mod-right-split,
+body .app-container .workspace-ribbon.mod-right {
+    background-color: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.1) !important;
+    background-image: linear-gradient(
+        135deg, 
+        rgba(255, 255, 255, 0.12) 0%, 
+        rgba(255, 255, 255, 0.02) 100%
+    ) !important;
+    
+    backdrop-filter: blur(25px) saturate(160%) brightness(1.1) !important;
+    -webkit-backdrop-filter: blur(25px) saturate(160%) brightness(1.1) !important;
+
+    /* 🔥 同步共用變數 var(--close-delay) 與 var(--transition-speed-out) */
+    transition: 
+        transform var(--transition-speed-out) ease var(--close-delay), 
+        box-shadow var(--transition-speed-out) ease var(--close-delay),
+        background-color var(--transition-speed-out) ease var(--close-delay) !important;
+    
+    box-shadow: 0 0 0 rgba(0,0,0,0) !important;
+}
+
+/* 2. 當側邊欄滑出時（🔥 關鍵修正：加入 :focus-within 保持打字時發光） */
+body .app-container .workspace-split.mod-left-split:hover,
+body .app-container .workspace-split.mod-left-split:focus-within,
+body .app-container .workspace-ribbon.mod-left:hover,
+body .app-container .workspace-ribbon.mod-left:focus-within {
+    box-shadow: 15px 0 40px 5px hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.3) !important;
+    /* 進入時不需要延遲，立即發光 */
+    transition: transform var(--transition-speed-in) cubic-bezier(0.1, 0.9, 0.2, 1) 0s, 
+                box-shadow var(--transition-speed-in) ease 0s !important;
+}
+
+body .app-container .workspace-split.mod-right-split:hover,
+body .app-container .workspace-split.mod-right-split:focus-within,
+body .app-container .workspace-ribbon.mod-right:hover,
+body .app-container .workspace-ribbon.mod-right:focus-within {
+    box-shadow: -15px 0 40px 5px hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.3) !important;
+    transition: transform var(--transition-speed-in) cubic-bezier(0.1, 0.9, 0.2, 1) 0s, 
+                box-shadow var(--transition-speed-in) ease 0s !important;
+}
+
+/* 3. 強化邊緣發光導光條 */
+body .app-container .workspace-split.mod-left-split {
+    border-right: 2px solid hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.7) !important;
+}
+body .app-container .workspace-split.mod-right-split {
+    border-left: 2px solid hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.7) !important;
+}
+
+/* 4. 移除所有內部層級背景，實現「文字浮空」 */
+.workspace-tabs.mod-left-split,
+.workspace-tabs.mod-right-split,
+.workspace-leaf,
+.workspace-leaf-content,
+.nav-files-container,
+.nav-folder,
+.nav-file,
+.side-dock-ribbon,
+.workspace-split.mod-left-split .workspace-tabs {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* 5. 文字半透與發光處理 */
+.nav-file-title, .nav-folder-title {
+    color: #fff !important;
+    text-shadow: 0 0 10px hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.5), 
+                 0 1px 3px rgba(0,0,0,0.8) !important;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+/* 6. 懸停在檔案上的動態光影 */
+.nav-file-title:hover, .nav-folder-title:hover {
+    background-color: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.25) !important;
+    box-shadow: inset 0 0 15px hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.2) !important;
+    transform: translateX(6px) !important;
+}

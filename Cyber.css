@@ -1,0 +1,217 @@
+
+/* Cyber Theme - Interface Preview Window Animations */
+/* Extracted dynamic animations for interface preview panes */
+
+/* Keyframe Animations */
+@keyframes scrollOpen {
+    from {
+        max-height: 0;
+        opacity: 0.5;
+        overflow: hidden;
+    }
+    to {
+        max-height: 100%;
+        opacity: 1;
+        overflow: auto;
+    }
+}
+
+@keyframes popOpen {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes bighover {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.01);
+    }
+}
+
+@keyframes releasehover {
+    from {
+        transform: scale(1.025);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes bigpressed {
+    0% {
+        transform: scale(1.01);
+    }
+    50% {
+        transform: scale(0.98);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes highlight {
+    0% {
+        transform: scale(1);
+    }
+    35% {
+        transform: scale(1.03);
+    }
+    65% {
+        transform: scale(0.98);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes highlight2 {
+    0% {
+        transform: scale(1);
+    }
+    35% {
+        transform: scale(1.07);
+    }
+    65% {
+        transform: scale(0.96);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Pages (note and sidepanel) animation */
+@keyframes slide-down {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    25% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-up {
+    0% {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    25% {
+        transform: translateY(10px);
+    }
+    100% {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-left {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-right {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+}
+
+@keyframes smallhover {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.03);
+    }
+}
+
+@keyframes smallpressed {
+    0% {
+        transform: scale(1.03);
+    }
+    50% {
+        transform: scale(0.96);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes decrease {
+    0% {
+        right: 100%;
+        width: 100%;
+    }
+    100% {
+        right: 0%;
+        width: 100%;
+    }
+}
+
+/* Animation Rules for Interface Panes */
+
+/* Note Animation */
+.workspace-split.mod-vertical.mod-root .workspace-tabs:not(.mod-stacked) .view-content {
+    animation: 0.25s slide-down forwards;
+}
+
+/* Left Pane Animation */
+:not(.is-mobile) .workspace-split.mod-left-split .workspace-leaf-content,
+body:not(.is-mobile) .workspace-leaf-content:not(:has(.view-content)) {
+    animation: 0.15s slide-left forwards;
+}
+
+/* Right Pane Animation */
+:not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content {
+    animation: 0.15s slide-right forwards;
+}
+
+/* Modal Animations */
+:not(.is-phone) .modal.mod-settings {
+    animation: 0.25s scrollOpen forwards;
+    border-radius: 0 0 5px 5px;
+}
+
+:not(.is-phone) .modal {
+    animation: 0.25s scrollOpen forwards;
+}
+
+/* Style Settings Container */
+.style-settings-container {
+    padding-bottom: 0px;
+    animation: slide-down 0.2s;
+}
+
+/* Disable Animations Class */
+.CG-disableAni :not(.is-mobile) .workspace-split.mod-right-split .workspace-leaf-content {
+    animation: none;
+}
