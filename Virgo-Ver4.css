@@ -2,27 +2,29 @@
     --trigger-area: 15px; 
     --transition-speed-in: 0.2s;
     --transition-speed-out: 0.4s;
-    --close-delay: 0.4s; /* ⏱️ 新增：收合前的緩衝時間 */
+    --close-delay: 0.4s;
 }
 
+/* workspace 改為 flex */
 body .app-container .workspace {
-    display: grid !important; 
-    grid-template-columns: 100% !important;
-    grid-template-rows: 100% !important;
-    padding: 0 !important; margin: 0 !important; width: 100vw !important;
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100vw !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 body .app-container .workspace-split.mod-root {
-    grid-area: 1 / 1 / 2 / 2 !important; 
-    width: 100% !important; height: 100% !important; max-width: 100% !important;
-    z-index: 1 !important; margin: 0 !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    height: 100% !important;
+    z-index: 1 !important;
+    margin: 0 !important;
 }
 
-/* 側邊欄頂天立地，預設隱藏 */
+/* 只有左側隱藏 */
 body .app-container .workspace-ribbon.mod-left,
-body .app-container .workspace-split.mod-left-split,
-body .app-container .workspace-split.mod-right-split,
-body .app-container .workspace-ribbon.mod-right {
+body .app-container .workspace-split.mod-left-split {
     position: absolute !important;
     height: 100% !important;
     top: 0 !important; 
@@ -30,45 +32,58 @@ body .app-container .workspace-ribbon.mod-right {
     pointer-events: none !important; 
     background-color: var(--background-secondary) !important;
     opacity: 0; 
-    /* 🔥 關鍵修改 1：在離開時加入 var(--close-delay) 緩衝時間 */
     transition: transform var(--transition-speed-out) ease var(--close-delay), 
                 opacity 0.2s ease var(--close-delay) !important;
 }
 
 body .app-container .workspace-ribbon.mod-left { left: 0 !important; transform: translateX(-100%); }
 body .app-container .workspace-split.mod-left-split { left: 0 !important; transform: translateX(-100%); }
-body .app-container .workspace-ribbon.mod-right { right: 0 !important; transform: translateX(100%); }
-body .app-container .workspace-split.mod-right-split { right: 0 !important; transform: translateX(100%); }
 
-/* 懸停或聚焦時展開 */
+/* 只有左側懸停展開 */
 body .app-container .workspace-split.mod-left-split:hover,
 body .app-container .workspace-split.mod-left-split:focus-within,
 body .app-container .workspace-ribbon.mod-left:hover,
-body .app-container .workspace-ribbon.mod-left:focus-within,
-body .app-container .workspace-split.mod-right-split:hover,
-body .app-container .workspace-split.mod-right-split:focus-within,
-body .app-container .workspace-ribbon.mod-right:hover,
-body .app-container .workspace-ribbon.mod-right:focus-within {
+body .app-container .workspace-ribbon.mod-left:focus-within {
     transform: translateX(0) !important;
     opacity: 1;
     pointer-events: auto !important;
     z-index: 9999 !important;
-    /* 🔥 關鍵修改 2：展開時把延遲設為 0s，確保滑鼠一碰到就立刻出現，不拖泥帶水 */
     transition: transform var(--transition-speed-in) cubic-bezier(0.1, 0.9, 0.2, 1) 0s, 
                 opacity var(--transition-speed-in) ease 0s !important;
 }
 
-/* 強制上方區域可以點擊，且不受視窗拖曳干擾 */
-.workspace-split.mod-right-split .workspace-tab-header-container {
+/* 左側隱形觸發區 */
+.workspace-split.mod-left-split::after {
+    content: ""; position: absolute; top: 0; bottom: 0; right: calc(var(--trigger-area) * -1); width: var(--trigger-area); background: transparent; pointer-events: auto !important; 
+}
+
+/* 右側：不動寬度，只控制顯隱，讓 Obsidian 自己管理拖拉 */
+body .app-container .workspace-split.mod-right-split.is-collapsed {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 0.2s ease var(--close-delay) !important;
+}
+
+body .app-container .workspace-split.mod-right-split:not(.is-collapsed) {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition: opacity var(--transition-speed-in) ease 0s !important;
+}
+
+/* 右側 ribbon 保持原生 */
+body .app-container .workspace-ribbon.mod-right {
+    position: relative !important;
+    transform: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition: none !important;
+    z-index: auto !important;
+}
+
+.workspace-split.mod-right-split .workspace-tab-header-container,
+.workspace-ribbon.mod-right {
     pointer-events: auto !important;
     -webkit-app-region: no-drag !important;
 }
 
-/* 隱形觸發區 */
-.workspace-split.mod-left-split::after {
-    content: ""; position: absolute; top: 0; bottom: 0; right: calc(var(--trigger-area) * -1); width: var(--trigger-area); background: transparent; pointer-events: auto !important; 
-}
-.workspace-split.mod-right-split::before {
-    content: ""; position: absolute; top: 0; bottom: 0; left: calc(var(--trigger-area) * -1); width: var(--trigger-area); background: transparent; pointer-events: auto !important;
-}
 .menu, .popover, .suggestion-container { z-index: 10000 !important; }
