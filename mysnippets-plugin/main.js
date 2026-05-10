@@ -158,12 +158,12 @@ function snippetsMenu(app, plugin, settings) {
         const toggleWrapper = document.createElement("div");
         const toggleComponent = new obsidian.ToggleComponent(toggleWrapper);
         toggleComponent.setValue(customCss.enabledSnippets.has(snippet));
+        toggleComponent.onChange((value) => {
+            customCss.setCssEnabledStatus(snippet, value);
+        });
+        // Only stop propagation so menu stays open; let Toggle handle its own click
         toggleWrapper.addEventListener("mousedown", (e) => {
             e.stopPropagation();
-            e.preventDefault();
-            const isEnabled = customCss.enabledSnippets.has(snippet);
-            customCss.setCssEnabledStatus(snippet, !isEnabled);
-            toggleComponent.setValue(!isEnabled);
         });
         item.appendChild(toggleWrapper);
 
